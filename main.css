@@ -1,0 +1,78 @@
+body{
+	margin: 0;
+	padding:0 20%;
+	background-color: #F2F2F2;
+	font-family: Microsoft YaHei,arial,sans-serif;
+}
+.main{
+	margin: 50px auto 0;
+	position: relative;
+}
+.title h1{
+	color: #363636;
+	margin: 0;
+	margin-bottom: 5px;
+}
+.title span {
+	font-size: 0.7em;
+}
+.line{
+	border: 1px solid #333;
+}
+.game {
+	width: 90%;
+	padding: 20px 10px 10px;
+	margin: 30px 15px 0;
+	width: 600px;
+}
+.instruction {
+	position: absolute;
+	top: 144px;
+	right: 8px;
+	height: 300px;
+	width: 115px;
+	padding: 10px;
+	font-size: 15px;
+	line-height: 2em;
+}
+.instruction p{
+	margin: 0;
+}
+.ctrl{
+	position: relative;
+	font-family: Microsoft YaHei;
+	color: #777;
+	font-size: 25px;
+}
+.ctrl p {
+	margin: 0;
+	height: 35px;
+	padding-bottom: 0px;
+}
+.ctrl button{
+	padding:7px;
+	position: absolute;
+	right: 3px;
+	bottom: 2px;
+	background-color: #eee;
+	font-family: Microsoft YaHei;
+	font-size: 16px;
+	color: #777;
+	outline: none; 
+}
+.box {
+	margin-top: 10px;
+	padding: 7px;
+	border: 1px solid #999;
+	border-radius: 3px;
+}
+.box td{
+	width: 17px;
+	height: 17px;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+}
+.box td.active {
+	background-color: #333;
+	border-color: #333;
+}
