@@ -1,71 +1,63 @@
 
-/*                            _ooOoo_  
- *                           o8888888o  
- *                           88" . "88  
- *                           (| -_- |)  
- *                            O\ = /O  
- *                        ____/`---'\____  
- *                      .   ' \\| |// `.  
- *                       / \\||| : |||// \  
- *                     / _||||| -:- |||||- \  
- *                       | | \\\ - /// | |  
- *                     | \_| ''\---/'' | |  
- *                      \ .-\__ `-` ___/-. /  
- *                   ___`. .' /--.--\ `. . __  
- *                ."" '< `.___\_<|>_/___.' >'"".  
- *               | | : `- \`.;`\ _ /`;.`/ - ` : | |  
- *                 \ \ `-. \_ __\ /__ _/ .-` / /  
- *         ======`-.____`-.___\_____/___.-`____.-'======  
- *                            `=---='  
- *  
- *         .............................................   */
-
-var i,j;
 var boxWidth  = 25;
 var boxHeight = 17;
-var direct    = "right";
+var snakeBox  = new Array();
 var snake     = new Array();
-var snakeBody = new Array();
+var food      = new Object();
+var instruct  = "right";
+var gameOver  = false;
 
-addLoadEvent(initSnake);
-addLoadEvent(initSnakeBody);
+
 addLoadEvent(start);
 addLoadEvent(restart);
-
-function initSnake() {
-	for(i = 0; i < boxHeight; i++ ) {
-		snake[i] = new Array();
-		for(j = 0; j < boxWidth; j++ ) {
-			snake[i][j] = false;
-		}
-	}
-}
-
-function initSnakeBody() {
-	for(i = 0; i < 3; i++ ) {
-		snakeBody[i] = new Array();
-		snakeBody[i].x = 2;
-		snakeBody[i].y = i;
-	}
-}
+addLoadEvent(keyBoardInstruct);
 
 function start() {
-	for(i in snake) {
-		for(j in snake[i]) {
-			snake[i][j] = false;
+	init_snakeBox();
+	init_snake();
+	set_food();
+	rendering();
+}
+
+function init_snakeBox() {
+	for(i = 0; i < boxHeight; i++ ) {
+		snakeBox[i] = new Array();
+		for(j = 0; j < boxWidth; j++ ) {
+			snakeBox[i][j] = false;
 		}
 	}
-	for(i in snakeBody) {
-		snake[snakeBody[i].x][snakeBody[i].y] = true;
+}
+
+function init_snake() {
+	for(i = 0; i < 3; i++ ) {
+		snake[i] = {x: 2, y: i};
 	}
-	rendering(snake);
+}
+
+function set_food() {
+	food.x = Math.floor(Math.random()*boxHeight);
+	food.y = Math.floor(Math.random()*boxWidth);
+	for(i in snake) {
+		if(snake[i].x == food.x && snake[i].y == food.y){
+			set_food();
+		}
+	}
 }
 
 function rendering() {
+	for(i in snakeBox) {
+		for(j in snakeBox[i]) {
+			snakeBox[i][j] = false;
+		}
+	}
+	for(i in snake) {
+		snakeBox[snake[i].x][snake[i].y] = true;
+	}
+	snakeBox[food.x][food.y] = true;
 	var td = document.getElementsByTagName("td");
 	for(var k=0,i = 0; i < boxHeight; i++) {
 		for(j = 0; j < boxWidth; j++,k++) {
-			if(snake[i][j] === true)
+			if(snakeBox[i][j] === true)
 				addClass(td[k],'active');
 			else
 				removeClass(td[k],'active');
@@ -81,32 +73,46 @@ function restart() {
 	}
 }
 
-function test() {
-	//alert(snake[2]);
-	rendering(snake);
-	for(j = 0; j < boxWidth ; j++) {
-		if(snake[2][j] === true) {
-			snake[2][++j] = true;
-			snake[2][j-3] = false;
+function keyBoardInstruct () {
+	document.onkeydown = function(event) {
+		switch(event.keyCode) {
+			event.preventDefault();
+			case 37: instruct = "left"; break;
+			case 38: instruct = "top"; break;
+			case 39: instruct = "right"; break;
+			case 40: instruct = "down"; break;
 		}
 	}
-	if(snake[2].indexOf(true)>=23)
-		test2();
-		return;
-	setTimeout("test()",100);
 }
 
-function test2() {
-	rendering();
-	for(j = 0; j < boxWidth ; j++) {
-		if(snake[2][j] === true) {
-			snake[2][j-1] = true;
-			snake[2][j+3] = false;
-		}
+function playing() {
+	document.onkeydown
+
+}
+
+function running() {
+	var len = snake.length;
+	var head = {x: snake[len-1].x, y: snake[len-1].y};
+	switch(instruct) {
+		case "top": 
+			if(head.x-1 >= 0)
+				snake[len] = {x: head.x-1, y: head.y};
+			break;
+		case "bottom": 
+			if(head.x+1 < boxHeight)
+				snake[len] = {x: head.x+1, y: head.y};
+			break;
+		case "left": 
+			if(head.y-1 >= 0)
+				snake[len] = {x: head.x, y: head.y-1};
+			break;
+		case "down": 
+			if(head.y+1 < boxWidth)
+				snake[len] = {x: head.x, y: head.y+1};
+			break;
 	}
-	if(snake[2].indexOf(true) === 0) {
-		test();
-		return;
+	for(i = 0; i <snake.length-1; i++) {
+		snake[i] = snake[i+1];
 	}
-	setTimeout("test2()",100);
+	snake.pop();
 }
