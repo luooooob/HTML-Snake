@@ -1,3 +1,35 @@
+/* ==============================================================
+ * some methods
+ * ============================================================== */
+
+function hasClass(obj, cls) {
+ 	return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+}
+
+function addClass(obj, cls) {  
+    if (!this.hasClass(obj, cls)) 
+    	obj.className += " " + cls;  
+}
+
+function removeClass(obj, cls) {  
+    if (hasClass(obj, cls)) {  
+        var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');  
+        obj.className = obj.className.replace(reg, ' ');  
+    }  
+}
+
+function addLoadEvent(func) { 
+	var oldonload = window.onload; 
+	if (typeof window.onload != 'function') { 
+		window.onload = func; 
+	}
+	else {
+		window.onload = function() { 
+			oldonload(); 
+			func(); 
+		}
+	}
+}
 
 /* ==============================================================
  * Public objects 
@@ -12,8 +44,8 @@ var food      = new food();
 var instruct  = new instruct();
 var gameOver  = false;
 var score     = 0;
-var run;
 var runStates = false;
+var run;
 
 function snakeBox() {
 	for(i = 0; i < boxHeight; i++ ) {
@@ -50,7 +82,7 @@ function food() {
 		this.y = Math.floor(Math.random()*boxWidth);
 		for(i in snake) {
 			if(snake[i].x == this.x && snake[i].y == this.y)
-				this.init();
+				this.set();
 		}
 	}
 	this.set();
@@ -75,6 +107,7 @@ function prepareStart() {
 	snakeBox.init();
 	snake.init();
 	instruct.init()
+	runStates = false;
 	score = 0;
 	food.set();
 	rendering();
@@ -106,7 +139,7 @@ function rendering() {
 function restart() {
 	var button = document.getElementsByTagName("button")[0];
 	button.onclick = function(event) {
-		if(run)
+		if(runStates)
 			clearInterval(run);
 		prepareStart();
 		event.preventDefault();
@@ -118,19 +151,21 @@ function keyBoardInstruct() {
 		if(!runStates)
 			gameStop();
 		else switch(event.keyCode) {
-			case 32: gameStop();
-			event.preventDefault();break;
-			case 37: instruct.value     = "left"; break;
-			case 38: instruct.value     = "top"; break;
-			case 39: instruct.value     = "right"; break;
-			case 40: instruct.value     = "down"; break;
+			case 32: 
+				gameStop();
+				event.preventDefault();
+				break;
+			case 37: instruct.value = "left"; break;
+			case 38: instruct.value = "top"; break;
+			case 39: instruct.value = "right"; break;
+			case 40: instruct.value = "down"; break;
 		}
 	}
 }
 
 function go_go_go() {
 	runStates = true;
-	run = setInterval("running()",800);
+	run = setInterval("running()",200);
 }
 
 function running() {
@@ -155,27 +190,28 @@ function running() {
 			if(head.y+1 < boxWidth)
 				snake[len] = {x: head.x, y: head.y+1};
 			break;
+		default:
+			gameOver();
 	}
 	if(snake[snake.len].x === food.x &&  snake[snake.len].y === food.y) {
 		food.set();
 		snake.len++;
-		score.value++;
+		score++;
 		running();
-		return ;
+		return;
 	}
-	else {
-		for(i = 0; i < snake.len; i++) {
+	else for(i = 0; i < snake.len; i++) {
 			snake[i]=snake[i+1];
-		}
 	}
 	rendering();
 }
 
 function gameStop() {
 	var para = document.querySelector(".game-stop");
-	if(runStates == false) {
+	if(!runStates) {
 		removeClass(para, "active");
 		go_go_go();
+		alert("go_go_go");
 	}
 	else {
 		clearInterval(run);
@@ -184,36 +220,7 @@ function gameStop() {
 	}
 }
 
-
-/* ==============================================================
- * jQuery methods
- * ============================================================== */
-
-function hasClass(obj, cls) {
- 	return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+function gameOver() {
+	;
 }
 
-function addClass(obj, cls) {  
-    if (!this.hasClass(obj, cls)) 
-    	obj.className += " " + cls;  
-}
-
-function removeClass(obj, cls) {  
-    if (hasClass(obj, cls)) {  
-        var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');  
-        obj.className = obj.className.replace(reg, ' ');  
-    }  
-}
-
-function addLoadEvent(func) { 
-	var oldonload = window.onload; 
-	if (typeof window.onload != 'function') { 
-		window.onload = func; 
-	}
-	else {
-		window.onload = function() { 
-			oldonload(); 
-			func(); 
-		}
-	}
-}
