@@ -10,9 +10,10 @@ var snakeBox  = new snakeBox();
 var snake     = new snake();
 var food      = new food();
 var instruct  = new instruct();
-var gameOver  = new gameOver();
-var score     = new score;
+var gameOver  = false;
+var score     = 0;
 var run;
+var runStates = false;
 
 function snakeBox() {
 	for(i = 0; i < boxHeight; i++ ) {
@@ -36,8 +37,8 @@ function snake() {
 		for(i = 0; i < 3; i++ ) {
 			this[i] = {x: 2, y: i};
 		}
+		this.len = 3;
 	}
-	this.len = 3;
 	this.init();
 }
     
@@ -62,23 +63,6 @@ function instruct() {
 	}
 }
 
-function gameOver() {
-	this.value = "false";
-	this.true = function() {
-		this.value = true;
-	}
-	this.false = function() {
-		this.value = false;
-	}
-}
-
-function score() {
-	this.value = 0;
-	this.init = function() {
-		this.value = 0;
-	}
-}
-
 /* ==============================================================
  * prepare part
  * ============================================================== */
@@ -88,10 +72,10 @@ addLoadEvent(keyBoardInstruct);
 addLoadEvent(restart);
 
 function prepareStart() {
-	if(run!=null)
-		clearInterval(run);
 	snakeBox.init();
 	snake.init();
+	instruct.init()
+	score = 0;
 	food.set();
 	rendering();
 }
@@ -122,7 +106,8 @@ function rendering() {
 function restart() {
 	var button = document.getElementsByTagName("button")[0];
 	button.onclick = function(event) {
-		clearInterval(run);
+		if(run)
+			clearInterval(run);
 		prepareStart();
 		event.preventDefault();
 	}
@@ -130,21 +115,22 @@ function restart() {
 
 function keyBoardInstruct() {
 	document.onkeydown = function(event) {
-		switch(event.keyCode) {
-			case 37: instruct.value = "left"; break;
-			case 38: instruct.value = "top"; break;
-			case 39: instruct.value = "right"; break;
-			case 40: instruct.value = "down"; break;
-			default: 
-				rendering();		
-				go_go_go();
+		if(!runStates)
+			gameStop();
+		else switch(event.keyCode) {
+			case 32: gameStop();
+			event.preventDefault();break;
+			case 37: instruct.value     = "left"; break;
+			case 38: instruct.value     = "top"; break;
+			case 39: instruct.value     = "right"; break;
+			case 40: instruct.value     = "down"; break;
 		}
-		event.preventDefault();
 	}
 }
 
 function go_go_go() {
-	run = setInterval("running()",200);
+	runStates = true;
+	run = setInterval("running()",800);
 }
 
 function running() {
@@ -170,11 +156,12 @@ function running() {
 				snake[len] = {x: head.x, y: head.y+1};
 			break;
 	}
-	if(snake[snake.len-1].x === food.x &&  snake[snake.len-1].y === food.y) {
+	if(snake[snake.len].x === food.x &&  snake[snake.len].y === food.y) {
 		food.set();
 		snake.len++;
 		score.value++;
-		//alert("if");
+		running();
+		return ;
 	}
 	else {
 		for(i = 0; i < snake.len; i++) {
@@ -182,6 +169,19 @@ function running() {
 		}
 	}
 	rendering();
+}
+
+function gameStop() {
+	var para = document.querySelector(".game-stop");
+	if(runStates == false) {
+		removeClass(para, "active");
+		go_go_go();
+	}
+	else {
+		clearInterval(run);
+		runStates = false;
+		addClass(para, "active");
+	}
 }
 
 
