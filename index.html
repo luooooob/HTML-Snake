@@ -4,8 +4,8 @@
 	<meta charset="UTF-8">
 	<title>Snake</title>
 	<link rel="stylesheet" href="main.css">
-	<!-- <script src="prepare.js"></script>  -->
-	<script type="text/javascript" src = "test.js"></script>
+	<script src="prepare.js"></script> 
+	<!-- <script type="text/javascript" src = "test.js"></script> -->
 </head>
 <body>
 	<div class="main">
@@ -13,10 +13,12 @@
 			<h1>贪吃蛇 <span>v1.0.0</span></h1>
 			<div class="line"></div>
 		</div>
+		<div class="instruction">
+			<p>按任意键开始, 方向键控制, 空格键暂停</p>
+		</div>
 		<div class="game" id = "game">
-			<div class="instruction">
-				<p>按任意键开始, 方向键控制, 空格键暂停</p>
-			</div>
+			<p class = "game-stop">游戏暂停</p>
+			<p class = "game-over">GAME OVER</p>
 			<div class="ctrl">
 				<button class="restart">重新开始</button>
 				<p id = "score" >score: <span>0</span></p>
@@ -482,7 +484,6 @@
 					<td></td>
 				</tr>
 			</table>
-			<p class = "game-stop">游戏暂停</p>
 		</div>
 	</div>
 </body>

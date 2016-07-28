@@ -7,6 +7,7 @@ body{
 .main{
 	margin: 50px auto 0;
 	position: relative;
+	width:760px 	;
 }
 .title h1{
 	color: #363636;
@@ -24,6 +25,7 @@ body{
 	padding: 20px 10px 10px;
 	margin: 30px 15px 0;
 	width: 600px;
+	position : absolute;
 }
 .instruction {
 	position: absolute;
@@ -77,13 +79,28 @@ body{
 	background-color: #333;
 	border-color: #333;
 }
-p.game-stop {
-	display: none;
+.box td.food {
+	background-color: red;
 }
-
+.game>p{
+	display: none;
+	position: absolute;
+	padding: 20px;
+	margin: 0 auto;
+	background-color: rgba(0, 0, 0, 0.7);
+	color: #fff;
+	font-size: 3em;
+	border-radius: 5px;
+	font-weight: bold;
+}
+p.game-stop {
+	top: 191px;
+	left: 188px;
+}
+p.game-over {
+	top: 191px;
+	left: 134px;
+}
 p.active {
 	display: block;
-	position: absolute;
-	top: 100px;
-	left: 200px;
 }
