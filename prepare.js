@@ -46,7 +46,6 @@ var gameOver  = false;
 var score     = 0;
 var runStates  = false;
 var runSpeed  = 0;
-var run;
 
 function snakeBox() {
 /*	snakeBox类, boolean型二维数组储存坐标*/
@@ -89,6 +88,7 @@ function instruct() {
 /*	键盘指令类*/
 	this.init = function() {
 		this.value = "right";
+		this.valueBeUsed = false;
 	}
 }
 
@@ -204,22 +204,23 @@ function keyBoardInstruct() {
 				gameStopEvent();
 			case 65:
 			case 37:
-				if(instruct.value === "right") break; 
+				if(instruct.valueBeUsed === false || instruct.value === "right") break; 
 				instruct.value = "left"; break;
 			case 87:
 			case 38: 
-				if(instruct.value === "down") break;
+				if(instruct.valueBeUsed === false || instruct.value === "down" ) break;
 				instruct.value = "top"; break;
 			case 68:
 			case 39: 
-				if(instruct.value === "left") break;
+				if(instruct.valueBeUsed === false || instruct.value === "left" ) break;
 				instruct.value = "right"; break;
 			case 83:
 			case 40: 
-				if(instruct.value === "top") break;
+				if(instruct.valueBeUsed === false || instruct.value === "top") break;
 				instruct.value = "down"; break;
 
 		}
+		instruct.valueBeUsed = false;
 		event.preventDefault();
 	}
 }
@@ -259,6 +260,7 @@ function running() {
 			else gameOver = true;
 			break;
 	}
+	instruct.valueBeUsed = true;
 	for(i = 0; i < snake.len; i++) {
 		if(snake[len].x === snake[i].x && snake[len].y === snake[i].y)
 			gameOver = true;
@@ -278,5 +280,11 @@ function running() {
 	rendering();
 	go_go_go();
 }
+
+/* ==============================================================
+ * the end
+ * ============================================================== */
+
+
 
 
