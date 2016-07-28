@@ -201,7 +201,7 @@ function keyBoardInstruct() {
 		}
 		else switch(event.keyCode) {
 			case 32: 
-				gameStopEvent();
+				gameStopEvent(); break;
 			case 65:
 			case 37:
 				if(instruct.valueBeUsed === false || instruct.value === "right") break; 
