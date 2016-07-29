@@ -4,7 +4,7 @@ int father[N],num[N];
 void initial()
 {
     int i;
-   for(i=1;i<=N;i++)
+    for(i=1;i<=N;i++)
     {
         father[i]=i;
         num[i]=1;
@@ -14,18 +14,18 @@ void initial()
 int find(int x)
 {
     if(father[x]!=x)
-    father[x]=find(father[x]);
+        father[x]=find(father[x]);
     return father[x];
 }
 void merge(int a,int b)
 {
 
-     int p=find(a);
-     int q=find(b);
+    int p=find(a);
+    int q=find(b);
     if(p!=q)
     {
         father[p]=q;
-       num[q]+=num[p];
+        num[q]+=num[p];
     }
    // return h[q];
 }
@@ -37,24 +37,24 @@ int main()
         if(n==0)
         {
             printf("1\n");
-             continue;
+            continue;
         }
-       max=0;
-       initial();
-      for(i=0;i<n;i++)
+        max=0;
+        initial();
+        for(i=0;i<n;i++)
         {
             scanf("%d%d",&a,&b);
             if(a>max)
-            max=a;
+                max=a;
             if(b>max);
-            max=b;
+                max=b;
             merge(a,b);
         }
-         int Max=0;
-          for(i=1;i<=max;i++)
-           if(num[i]>Max)
-            Max=num[i];
-         printf("%d\n",Max);
+        int Max=0;
+        for(i=1;i<=max;i++)
+            if(num[i]>Max)
+                Max=num[i];
+        printf("%d\n",Max);
     }
     return 0;
 }
