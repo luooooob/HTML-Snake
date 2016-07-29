@@ -88,7 +88,7 @@ function instruct() {
 /*	键盘指令类*/
 	this.init = function() {
 		this.value = "right";
-		this.valueBeUsed = false;
+		this.nextStep = "";
 	}
 }
 
@@ -204,23 +204,22 @@ function keyBoardInstruct() {
 				gameStopEvent(); break;
 			case 65:
 			case 37:
-				if(instruct.valueBeUsed === false || instruct.value === "right") break; 
+				if(instruct.nextStep === "right") break; 
 				instruct.value = "left"; break;
 			case 87:
 			case 38: 
-				if(instruct.valueBeUsed === false || instruct.value === "down" ) break;
+				if(instruct.nextStep === "down" ) break;
 				instruct.value = "top"; break;
 			case 68:
 			case 39: 
-				if(instruct.valueBeUsed === false || instruct.value === "left" ) break;
+				if(instruct.nextStep === "left" ) break;
 				instruct.value = "right"; break;
 			case 83:
 			case 40: 
-				if(instruct.valueBeUsed === false || instruct.value === "top") break;
+				if(instruct.nextStep === "top") break;
 				instruct.value = "down"; break;
 
 		}
-		instruct.valueBeUsed = false;
 		event.preventDefault();
 	}
 }
@@ -260,8 +259,8 @@ function running() {
 			else gameOver = true;
 			break;
 	}
-	instruct.valueBeUsed = true;
-	for(i = 0; i < snake.len; i++) {
+	instruct.nextStep = instruct.value;
+	for(i = 0; i < snake.len-1; i++) {
 		if(snake[len].x === snake[i].x && snake[len].y === snake[i].y)
 			gameOver = true;
 	}
