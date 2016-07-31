@@ -225,7 +225,7 @@ function keyBoardInstruct() {
 }
 
 function go_go_go() {
-	runSpeed  = Math.max(250 - snake.len*3, 90);
+	runSpeed  = Math.max(233 - snake.len, 130);
 	run = setTimeout("running()",runSpeed);
 
 }
