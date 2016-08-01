@@ -159,6 +159,8 @@ function rendering() {
 
 function gameStopEvent() {
 	var para = document.querySelector(".game-stop");
+	if(gameOver)
+		return;
 	if(!runStates) {
 		removeClass(para, "active");
 		runStates = true;
